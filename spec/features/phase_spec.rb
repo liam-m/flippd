@@ -34,4 +34,12 @@ feature "A phase page" do
       expect(page).to have_link title, href: "/videos/#{index+1}"
     end
   end
+
+  it "contains a link to every quiz in this phase" do
+    titles = ['Ruby Quiz']
+
+    titles.each_with_index do |title, index|
+      expect(page).to have_link title, href: "/quiz/#{index+1}"
+    end
+  end
 end

@@ -4,13 +4,14 @@ require 'json'
 class Flippd < Sinatra::Application
   before do
     # Load in the configuration (at the URL in the project's .env file)
-    @module = JSON.load(open(ENV['CONFIG_URL'] + "module.json"))
+    @module = JSON.load(open("module.json"))
     @phases = @module['phases']
 
     # The configuration doesn't have to include identifiers, so we
     # add an identifier to each phase and video
     phase_id = 1
     video_id = 1
+    quiz_id = 1
     @phases.each do |phase|
       phase["id"] = phase_id
       phase_id += 1
@@ -19,6 +20,12 @@ class Flippd < Sinatra::Application
         topic['videos'].each do |video|
           video["id"] = video_id
           video_id += 1
+        end
+        if not topic['quiz'].nil?
+          topic['quiz'].each do |quiz|
+            quiz["id"] = quiz_id
+            quiz_id +=1
+          end
         end
       end
     end
@@ -72,5 +79,22 @@ class Flippd < Sinatra::Application
 
     pass unless @video
     erb :video
+  end
+
+  get '/quiz/:id' do
+    @phases.each do |phase|
+      phase['topics'].each do |topic|
+        if not topic['quiz'].nil?
+          topic['quiz'].each do |quiz|
+            if quiz["id"] == params['id'].to_i
+              @phase = phase
+              @quiz = quiz
+            end
+          end
+        end
+      end
+    end
+    pass unless @quiz
+    erb :quiz
   end
 end

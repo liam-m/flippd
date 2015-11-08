@@ -16,6 +16,13 @@
           <a href="/videos/<%=video["id"]%>"><%=video["title"]%></a>
         </li>
     <% end %>
+    <% if not topic['quiz'].nil? %>
+      <% topic["quiz"].each do |quiz| %>
+        <li>
+          <a href="/quiz/<%=quiz["id"]%>"><%=quiz["title"]%></a>
+        </li>
+      <% end %>
+    <% end %>
     </ul>
   </div>
   <% end %>

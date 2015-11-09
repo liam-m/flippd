@@ -17,11 +17,10 @@
         </li>
     <% end %>
     <% if not topic['quiz'].nil? %>
-      <% topic["quiz"].each do |quiz| %>
-        <li>
-          <a href="/quiz/<%=quiz["id"]%>"><%=quiz["title"]%></a>
-        </li>
-      <% end %>
+      <% quiz = topic["quiz"] %>
+      <li>
+        <a href="/quiz/<%=quiz['id']%>"><%=quiz["title"]%></a>
+      </li>
     <% end %>
     </ul>
   </div>

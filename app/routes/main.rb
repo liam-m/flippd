@@ -22,10 +22,9 @@ class Flippd < Sinatra::Application
           video_id += 1
         end
         if not topic['quiz'].nil?
-          topic['quiz'].each do |quiz|
-            quiz["id"] = quiz_id
-            quiz_id +=1
-          end
+          quiz = topic['quiz']
+          quiz["id"] = quiz_id
+          quiz_id +=1
         end
       end
     end
@@ -85,11 +84,10 @@ class Flippd < Sinatra::Application
     @phases.each do |phase|
       phase['topics'].each do |topic|
         if not topic['quiz'].nil?
-          topic['quiz'].each do |quiz|
-            if quiz["id"] == params['id'].to_i
-              @phase = phase
-              @quiz = quiz
-            end
+          quiz = topic['quiz']
+          if quiz["id"] == params['id'].to_i
+            @phase = phase
+            @quiz = quiz
           end
         end
       end

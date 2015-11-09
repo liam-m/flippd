@@ -39,7 +39,7 @@ feature "A phase page" do
     titles = ['Ruby Quiz']
 
     titles.each_with_index do |title, index|
-      expect(page).to have_link title, href: "/quiz/#{index+1}"
+      expect(page).to have_link title, href: "/quizzes/#{index+1}"
     end
   end
 end

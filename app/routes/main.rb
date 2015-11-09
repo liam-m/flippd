@@ -80,7 +80,7 @@ class Flippd < Sinatra::Application
     erb :video
   end
 
-  get '/quiz/:id' do
+  get '/quizzes/:id' do
     @phases.each do |phase|
       phase['topics'].each do |topic|
         if not topic['quiz'].nil?

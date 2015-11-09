@@ -4,7 +4,7 @@ require 'json'
 class Flippd < Sinatra::Application
   before do
     # Load in the configuration (at the URL in the project's .env file)
-    @module = JSON.load(open("module.json"))
+    @module = JSON.load(open(ENV['CONFIG_URL'] + "module.json"))
     @phases = @module['phases']
 
     # The configuration doesn't have to include identifiers, so we

@@ -8,7 +8,7 @@ class Flippd < Sinatra::Application
     @phases = @module['phases']
 
     # The configuration doesn't have to include identifiers, so we
-    # add an identifier to each phase and video
+    # add an identifier to each phase, video and quiz
     phase_id = 1
     video_id = 1
     quiz_id = 1
@@ -23,6 +23,21 @@ class Flippd < Sinatra::Application
         end
         if not topic['quiz'].nil?
           quiz = topic['quiz']
+
+          if quiz['questions'].length == 0
+            raise 'Quiz must have at least 1 question'
+          end
+
+          quiz['questions'].each do |question|
+            if question['answers'].length <= 1
+              raise 'Question must have at least 2 answers'
+            end
+
+            if question['correct_answer'].nil?
+              raise 'Question must have a correct answer'
+            end
+          end
+
           quiz["id"] = quiz_id
           quiz_id +=1
         end

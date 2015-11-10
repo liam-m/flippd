@@ -6,25 +6,36 @@ class Flippd < Sinatra::Application
     # Load in the configuration (at the URL in the project's .env file)
     @module = JSON.load(open(ENV['CONFIG_URL'] + "module.json"))
     @phases = @module['phases']
+    @items = {}
 
     # The configuration doesn't have to include identifiers, so we
     # add an identifier to each phase, video and quiz
     phase_id = 1
-    video_id = 1
-    quiz_id = 1
+    topic_id = 1
+    item_id = 1
     @phases.each do |phase|
       phase["id"] = phase_id
       phase_id += 1
 
       phase['topics'].each do |topic|
+        topic["id"] = topic_id
+        topic_id += 1
+
         topic['videos'].each do |video|
-          video["id"] = video_id
-          video_id += 1
+          video["type"] = :video
+          video["id"] = item_id
+          video["phase"] = phase
+          video["topic"] = topic
+          @items[ item_id ] = video
+
+          item_id += 1
         end
+
         # Quizzes are optional
         if not topic["quiz"].nil?
           topic['quiz'].each do |quiz|
 
+            # Validation
             if quiz['questions'].length == 0
               raise 'Quiz must have at least 1 question'
             end
@@ -39,8 +50,13 @@ class Flippd < Sinatra::Application
               end
             end
 
-            quiz["id"] = quiz_id
-            quiz_id += 1
+            quiz["type"] = :quiz
+            quiz["id"] = item_id
+            quiz["phase"] = phase
+            quiz["topic"] = topic
+            @items[ item_id ] = quiz
+
+            item_id += 1
           end
         end
       end
@@ -59,6 +75,15 @@ class Flippd < Sinatra::Application
 
     pass unless @phase
     erb :phase
+  end
+
+  get "/item/:id" do
+    @item = @items[ params["id"].to_i ]
+    @item_next = @items[ params["id"].to_i + 1 ]
+    @item_prev = @items[ params["id"].to_i - 1 ]
+
+    pass unless @item
+    erb @item["type"]
   end
 
   get '/videos/:id' do

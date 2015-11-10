@@ -2,8 +2,11 @@
 <p class="lead"><%= @phase["summary"] %></p>
 
 <!-- In Each Topic -->
-<div id="topics" class="row">
+<div id="topics">
   <% @phase["topics"].each_with_index do |topic, index| %>
+  <% if index % 2 == 0 %>
+    <div class="row">
+  <% end %>
   <div class="col-md-6" style="padding-top: 15px;">
     <h4><%=index+1%>. <%=topic["title"]%></h4>
 
@@ -12,15 +15,16 @@
     </p>
 
     <ul>
+    <!-- TODO: Remake to iterate over @items -->
     <% topic["videos"].each do |video| %>
         <li>
-          <a href="/videos/<%=video["id"]%>"><%=video["title"]%></a>
+          <a href="/item/<%=video["id"]%>"><%=video["title"]%></a>
         </li>
     <% end %>
     <% if not topic['quiz'].nil? %>
       <% topic["quiz"].each do |quiz| %>
         <li>
-          <a href="/quizzes/<%=quiz["id"]%>">
+          <a href="/item/<%=quiz["id"]%>">
             <i class="glyphicon glyphicon-pencil"></i>
             <%=quiz["title"]%>
           </a>
@@ -29,5 +33,8 @@
     <% end %>
     </ul>
   </div>
+  <% if index % 2 == 1 %>
+    </div>
+  <% end %>
   <% end %>
 </div>

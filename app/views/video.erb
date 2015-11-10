@@ -1,19 +1,19 @@
 <div class="row">
   <div class="col-xs-6 col-md-6">
-    <% if @previous_video %>
+    <% if @item_prev %>
       <h5>
-        <a href="/videos/<%=@previous_video["id"]%>">
+        <a href="/item/<%=@item_prev["id"]%>">
           <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
-          <%=@previous_video["title"]%>
+          <%=@item_prev["title"]%>
         </a>
       </h5>
     <% end %>
   </div>
   <div class="col-xs-6 col-md-6" style="text-align: right;">
-    <% if @next_video %>
+    <% if @item_next %>
       <h5>
-        <a href="/videos/<%=@next_video["id"]%>">
-          <%=@next_video["title"]%>
+        <a href="/item/<%=@item_next["id"]%>">
+          <%=@item_next["title"]%>
           <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
         </a>
       </h5>
@@ -21,19 +21,19 @@
   </div>
 </div>
 
-<h1 data-flippd-phase="<%= @phase["id"]%>"><%= @video["title"] %></h1>
-<p class="lead"><%= @video["description"] %></p>
+<h1 data-flippd-phase="<%= @item["phase"]["id"]%>"><%= @item["title"] %></h1>
+<p class="lead"><%= @item["description"] %></p>
 
 <div id="video" class="embed-responsive embed-responsive-16by9">
   <div id="player"></div>
 </div>
 
-<% if @video["resources"] %>
+<% if @item["resources"] %>
 <div id="resources" class="row" style="margin-top: 1.5em;">
   <div class="col-xs-6 col-md-6">
     <h4>Additional Material</h4>
     <ul class="list-unstyled" style="padding-left: 15px; font-size: 120%;">
-    <% @video["resources"].each do |resource| %>
+    <% @item["resources"].each do |resource| %>
       <li style="padding: 3px 0">
         <span class="glyphicon glyphicon-<%=resource["icon"]%>" aria-hidden="true"></span>
         &nbsp; <a href="<%=resource["url"]%>"><%=resource["title"]%></a>
@@ -57,7 +57,7 @@
   var player;
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
-      videoId: '<%= @video["youtube"] %>'
+      videoId: '<%= @item["youtube"] %>'
     });
   }
   function stopVideo() {

@@ -22,8 +22,8 @@ class Flippd < Sinatra::Application
           video_id += 1
         end
         # Quizzes are optional
-        if not topic["quiz"].nil?
-          topic['quiz'].each do |quiz|
+        if not topic["quizzes"].nil?
+          topic['quizzes'].each do |quiz|
 
             if quiz['questions'].length == 0
               raise 'Quiz must have at least 1 question'
@@ -100,8 +100,8 @@ class Flippd < Sinatra::Application
   get '/quizzes/:id' do
     @phases.each do |phase|
       phase['topics'].each do |topic|
-        if not topic['quiz'].nil?
-          topic['quiz'].each do |quiz|
+        if not topic['quizzes'].nil?
+          topic['quizzes'].each do |quiz|
             if quiz["id"] == params['id'].to_i
               @phase = phase
               @quiz = quiz

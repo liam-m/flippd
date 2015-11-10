@@ -1,6 +1,7 @@
 <h1 data-flippd-phase="<%= @phase["id"]%>"><%= @phase["title"] %></h1>
 <p class="lead"><%= @phase["summary"] %></p>
 
+<!-- In Each Topic -->
 <div id="topics" class="row">
   <% @phase["topics"].each_with_index do |topic, index| %>
   <div class="col-md-6" style="padding-top: 15px;">
@@ -17,10 +18,14 @@
         </li>
     <% end %>
     <% if not topic['quiz'].nil? %>
-      <% quiz = topic["quiz"] %>
-      <li>
-        <a href="/quizzes/<%=quiz['id']%>"><%=quiz["title"]%></a>
-      </li>
+      <% topic["quiz"].each do |quiz| %>
+        <li>
+          <a href="/quizzes/<%=quiz["id"]%>">
+            <i class="glyphicon glyphicon-pencil"></i>
+            <%=quiz["title"]%>
+          </a>
+        </li>
+      <% end %>
     <% end %>
     </ul>
   </div>

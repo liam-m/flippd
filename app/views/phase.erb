@@ -20,13 +20,13 @@
     <!-- TODO: Remake to iterate over @items -->
     <% topic["videos"].each do |video| %>
         <li>
-          <a href="/item/<%=video["id"]%>"><%=video["title"]%></a>
+          <a href="/item/<%=video["slug"]%>"><%=video["title"]%></a>
         </li>
     <% end %>
     <% if not topic['quizzes'].nil? %>
       <% topic["quizzes"].each do |quiz| %>
         <li>
-          <a href="/item/<%=quiz["id"]%>">
+          <a href="/item/<%=quiz["slug"]%>">
             <i class="glyphicon glyphicon-pencil"></i>
             <%=quiz["title"]%>
           </a>

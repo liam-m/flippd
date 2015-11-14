@@ -21,8 +21,8 @@
           <a href="/item/<%=video["id"]%>"><%=video["title"]%></a>
         </li>
     <% end %>
-    <% if not topic['quiz'].nil? %>
-      <% topic["quiz"].each do |quiz| %>
+    <% if not topic['quizzes'].nil? %>
+      <% topic["quizzes"].each do |quiz| %>
         <li>
           <a href="/item/<%=quiz["id"]%>">
             <i class="glyphicon glyphicon-pencil"></i>

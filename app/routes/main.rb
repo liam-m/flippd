@@ -32,8 +32,8 @@ class Flippd < Sinatra::Application
         end
 
         # Quizzes are optional
-        if not topic["quiz"].nil?
-          topic['quiz'].each do |quiz|
+        if not topic["quizzes"].nil?
+          topic['quizzes'].each do |quiz|
 
             # Validation
             if quiz['questions'].length == 0

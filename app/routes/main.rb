@@ -13,6 +13,13 @@ class Flippd < Sinatra::Application
     phase_id = 1
     topic_id = 1
     item_id = 1
+
+    generateIds = Proc.new do |item|
+      item["id"] = item_id
+      @items[ item_id ] = item
+      item_id += 1
+    end
+
     @phases.each do |phase|
       phase["id"] = phase_id
       phase_id += 1
@@ -23,12 +30,9 @@ class Flippd < Sinatra::Application
 
         topic['videos'].each do |video|
           video["type"] = :video
-          video["id"] = item_id
           video["phase"] = phase
           video["topic"] = topic
-          @items[ item_id ] = video
-
-          item_id += 1
+          generateIds.call( video )
         end
 
         # Quizzes are optional
@@ -51,12 +55,9 @@ class Flippd < Sinatra::Application
             end
 
             quiz["type"] = :quiz
-            quiz["id"] = item_id
             quiz["phase"] = phase
             quiz["topic"] = topic
-            @items[ item_id ] = quiz
-
-            item_id += 1
+            generateIds.call( quiz )
           end
         end
       end

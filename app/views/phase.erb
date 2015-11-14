@@ -3,8 +3,10 @@
 
 <!-- In Each Topic -->
 <div id="topics">
+  <% closed = true %>
   <% @phase["topics"].each_with_index do |topic, index| %>
   <% if index % 2 == 0 %>
+    <% closed = false %>
     <div class="row">
   <% end %>
   <div class="col-md-6" style="padding-top: 15px;">
@@ -34,7 +36,11 @@
     </ul>
   </div>
   <% if index % 2 == 1 %>
+    <% closed = true %>
     </div>
   <% end %>
+  <% end %>
+  <% if not closed %>
+  </div>
   <% end %>
 </div>

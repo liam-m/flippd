@@ -114,4 +114,39 @@ class Flippd < Sinatra::Application
     pass unless @quiz
     erb :quiz
   end
+
+  post "/quizzes/:id" do
+    # Get the quiz
+    @phases.each do |phase|
+      phase['topics'].each do |topic|
+        if not topic['quizzes'].nil?
+          topic['quizzes'].each do |quiz|
+            if quiz["id"] == params['id'].to_i
+              @phase = phase
+              @quiz = quiz
+            end
+          end
+        end
+      end
+    end
+
+    pass unless @quiz
+
+    @results = []
+    @correct_num = 0
+
+    @quiz["questions"].each_with_index do | question, index |
+      answer = params[ ( "q" + index.to_s ).to_sym ].to_i
+      @results[ index ] = [
+        answer == question[ "correct_answer" ], # Correct?
+        answer, # Selected Answer
+        question[ "correct_answer" ] # Actual correct answer
+      ]
+      if answer == question[ "correct_answer" ]
+        @correct_num += 1
+      end
+    end
+
+    erb :quiz
+  end
 end

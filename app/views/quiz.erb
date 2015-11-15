@@ -3,8 +3,8 @@
 <form>
   <% @quiz['questions'].each_with_index do |question, question_index| %>
       <div class="form-group">
-        <p><%=question['question']%></p>
-        
+        <h3><%= ( question_index + 1 ).to_s + ". " + question['question']%></h3>
+
         <% question['answers'].each_with_index do |answer, answer_index| %>
         <div class="radio">
           <label>

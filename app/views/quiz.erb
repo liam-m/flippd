@@ -34,9 +34,12 @@
 
             <!-- Indicator Icon -->
             <% if result_set %>
-              <% if result_set[0] and answer_index == result_set[1] %>
-                <!-- Show selected Answer if correct -->
+              <% if answer_index == result_set[1] %>
+                <!-- Show thumbs up if Answer correct -->
                 <span class="glyphicon glyphicon-thumbs-up"></span>
+              <% elsif not result_set[0] and answer_index == result_set[1] %>
+                <!-- Show thumbs down Answer incorrect -->
+                <span class="glyphicon glyphicon-thumbs-down"></span>
               <% elsif not result_set[0] and answer_index == result_set[2] %>
                 <!-- Show actual correct answer if incorrect -->
                 <span class="glyphicon glyphicon-hand-left"></span>

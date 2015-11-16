@@ -25,6 +25,7 @@
               type="radio"
               name="q<%=question_index%>"
               value="<%=answer_index%>"
+              required
               <%= result_set and result_set[1] == answer_index and "checked" or "" %>
               <%= result_set and "disabled" or "" %>>
 

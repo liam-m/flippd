@@ -136,6 +136,10 @@ class Flippd < Sinatra::Application
     @correct_num = 0
 
     @quiz["questions"].each_with_index do | question, index |
+      if params[ ( "q" + index.to_s ).to_sym ].nil?
+        raise "Required question not answered"
+      end
+
       answer = params[ ( "q" + index.to_s ).to_sym ].to_i
       @results[ index ] = [
         answer == question[ "correct_answer" ], # Correct?

@@ -34,7 +34,7 @@
 
             <!-- Indicator Icon -->
             <% if result_set %>
-              <% if answer_index == result_set[1] %>
+              <% if result_set[0] and answer_index == result_set[1] %>
                 <!-- Show thumbs up if Answer correct -->
                 <span class="glyphicon glyphicon-thumbs-up"></span>
               <% elsif not result_set[0] and answer_index == result_set[1] %>

@@ -1,0 +1,90 @@
+<h1 data-flippd-phase="<%= @phase["id"]%>"><%=@quiz['title']%></h1>
+
+<form method="post">
+  <% @quiz['questions'].each_with_index do |question, question_index| %>
+      <% result_set = @results ? @results[ question_index ] : nil %>
+
+      <div class="form-group">
+        <h3>
+          <!-- Checkmark or cross at start of each question on submit -->
+          <% if result_set %>
+            <% if result_set[0]  %>
+              <span class="glyphicon glyphicon-ok text-success"></span>
+            <% else %>
+              <span class="glyphicon glyphicon-remove text-danger"></span>
+            <% end %>
+          <% end %>
+          <%= ( question_index + 1 ).to_s + ". " + question['question']%>
+        </h3>
+
+        <% question['answers'].each_with_index do |answer, answer_index| %>
+        <div class="radio">
+          <label>
+            <!-- Radio Button -->
+            <input
+              type="radio"
+              name="q<%=question_index%>"
+              value="<%=answer_index%>"
+              disabled
+              <%= result_set and result_set[1] == answer_index and "checked" or "" %>
+              >
+
+            <!-- Text Answer -->
+            <% if not result_set[0] and answer_index == result_set[2] %>
+              <!-- Show actual correct answer if incorrect -->
+              <span style="color:red" >
+            <% else %>
+              <span>
+            <% end %>
+            <%= answer %>
+            </span>
+
+            <!-- Indicator Icon -->
+            <% if result_set %>
+              <% if result_set[0] and answer_index == result_set[2] %>
+                <!-- Show thumbs up if Answer correct -->
+                <span class="glyphicon glyphicon-thumbs-up"></span>
+              <% elsif not result_set[0] and answer_index == result_set[1] %>
+                <!-- Show thumbs down Answer incorrect -->
+                <span class="glyphicon glyphicon-thumbs-down"></span>
+              <% elsif not result_set[0] and answer_index == result_set[2] %>
+                <!-- Show actual correct answer if incorrect -->
+                <span class="glyphicon glyphicon-hand-left"></span>
+              <% end %>
+            <% end %>
+
+          </label>
+        </div>
+        <% end %>
+      </div>
+  <% end %>
+
+  <button type="submit" class="btn btn-default" <%= @results and @submission_error.nil? and "disabled" or "" %>>Submit</button>
+
+  <% if @results %>
+    <% correct = @correct_num %>
+    <% total = @results.count %>
+    <% factor = correct.to_f / total %>
+    <p>
+      <div class="progress">
+        <div
+          class="progress-bar <%=
+            if correct == total
+              "progress-bar-success"
+            elsif factor > 0.66
+              "progress-bar-primary"
+            elsif factor > 0.33
+              "progress-bar-warning"
+            else
+              "progress-bar-danger"
+            end
+            %>"
+          role="progressbar"
+          style="width: <%= factor * 100 %>%; min-width: 2em;">
+
+          <%= correct %> / <%= total %>
+        </div>
+      </div>
+    </p>
+  <% end %>
+</form>

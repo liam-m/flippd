@@ -134,23 +134,35 @@ class Flippd < Sinatra::Application
 
     @results = []
     @correct_num = 0
+    @submission_error = nil
 
     @quiz["questions"].each_with_index do | question, index |
       if params[ ( "q" + index.to_s ).to_sym ].nil?
-        raise "Required question not answered"
+        answer = params[ ( "q" + index.to_s ).to_sym ].to_i
+        @results[ index ] = [
+          false, # Correct?
+          false, # Selected Answer
+          question[ "correct_answer" ], # Actual correct answer
+          false
+        ]
+        @submission_error = "Please answer all questions"
+      else
+        answer = params[ ( "q" + index.to_s ).to_sym ].to_i
+        @results[ index ] = [
+          answer == question[ "correct_answer" ], # Correct?
+          answer, # Selected Answer
+          question[ "correct_answer" ], # Actual correct answer
+          true
+        ]
       end
-
-      answer = params[ ( "q" + index.to_s ).to_sym ].to_i
-      @results[ index ] = [
-        answer == question[ "correct_answer" ], # Correct?
-        answer, # Selected Answer
-        question[ "correct_answer" ] # Actual correct answer
-      ]
       if answer == question[ "correct_answer" ]
         @correct_num += 1
       end
     end
-
-    erb :quiz
+    if @submission_error.nil?
+      erb :quiz_complete
+    else
+      erb :quiz
+    end
   end
 end

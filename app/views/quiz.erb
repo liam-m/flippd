@@ -11,7 +11,7 @@
         <h3>
           <!-- Checkmark or cross at start of each question on submit -->
           <% if not @submission_error.nil? and not result_set[3] %>
-            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <span class="glyphicon glyphicon-exclamation-sign text-primary"></span>
           <% end %>
           <%= ( question_index + 1 ).to_s + ". " + question['question']%>
         </h3>

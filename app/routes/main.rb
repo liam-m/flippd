@@ -17,6 +17,8 @@ class Flippd < Sinatra::Application
 
     @phases.each do |phase|
       phase["id"] = phase_id
+      # TODO: Refactor slug generation
+      # TODO: Abstract generting URLs instead of /phase/#{phase}/#{item}
       phase["slug"] = phase["title"]
         .downcase
         .gsub( /[^a-z0-9 ]/, "" )
@@ -113,6 +115,7 @@ class Flippd < Sinatra::Application
   end
 
   get '/phases/:title/:slug' do
+    # TODO: Abstract away getting @phase, @item, possibly @item_next @item_prev
     @phase = nil
     @phases.each do |phase|
       if phase[ "slug" ] == params[ "title" ]
@@ -128,5 +131,58 @@ class Flippd < Sinatra::Application
     @item_prev = @items[ @item["id"].to_i - 1 ]
 
     erb @item[ "type" ]
+  end
+
+  post '/phases/:title/:slug' do
+    @phase = nil
+    @phases.each do |phase|
+      if phase[ "slug" ] == params[ "title" ]
+        @phase = phase
+      end
+    end
+    pass unless @phase
+
+    @item = @urls[ @phase[ "id" ] ][ params[ 'slug' ] ]
+    pass unless @item
+
+    @item_next = @items[ @item["id"].to_i + 1 ]
+    @item_prev = @items[ @item["id"].to_i - 1 ]
+
+    # Quiz Submission
+  # TODO: Refactor!!!
+    if @item[ "type" ] == :quiz
+      @results = []
+      @correct_num = 0
+      @submission_error = nil
+
+      @item["questions"].each_with_index do | question, index |
+        if params[ ( "q" + index.to_s ).to_sym ].nil?
+          answer = params[ ( "q" + index.to_s ).to_sym ].to_i
+          @results[ index ] = [
+            false, # Correct?
+            false, # Selected Answer
+            question[ "correct_answer" ], # Actual correct answer
+            false
+          ]
+          @submission_error = "Please answer all questions"
+        else
+          answer = params[ ( "q" + index.to_s ).to_sym ].to_i
+          @results[ index ] = [
+            answer == question[ "correct_answer" ], # Correct?
+            answer, # Selected Answer
+            question[ "correct_answer" ], # Actual correct answer
+            true
+          ]
+        end
+        if answer == question[ "correct_answer" ]
+          @correct_num += 1
+        end
+      end
+      if @submission_error.nil?
+        erb :quiz_complete
+      else
+        erb :quiz
+      end
+    end
   end
 end

@@ -23,16 +23,34 @@
 
 <h1 data-flippd-phase="<%= @item["phase"]["id"]%>"><%=@item['title']%></h1>
 
-<form>
+<form method="post">
+  <span style="color:red">
+    <%= @submission_error %>
+  </span>
   <% @item['questions'].each_with_index do |question, question_index| %>
+      <% result_set = @results ? @results[ question_index ] : nil %>
+
       <div class="form-group">
-        <p><%=question['question']%></p>
+        <h3>
+          <!-- Checkmark or cross at start of each question on submit -->
+          <% if not @submission_error.nil? and not result_set[3] %>
+            <span class="glyphicon glyphicon-exclamation-sign text-primary"></span>
+          <% end %>
+          <%= ( question_index + 1 ).to_s + ". " + question['question']%>
+        </h3>
 
         <% question['answers'].each_with_index do |answer, answer_index| %>
         <div class="radio">
           <label>
-            <input type="radio" name="q<%=question_index%>" value="<%=answer_index%>">
-            <%=answer%>
+            <!-- Radio Button -->
+            <input
+              type="radio"
+              name="q<%=question_index%>"
+              value="<%=answer_index%>"
+              <%= result_set and result_set[1] == answer_index and "checked" or "" %>
+
+            <!-- Text Answer -->
+            <%= answer %>
           </label>
         </div>
         <% end %>

@@ -2,7 +2,7 @@
   <div class="col-xs-6 col-md-6">
     <% if @item_prev %>
       <h5>
-        <a href="/item/<%=@item_prev["slug"]%>">
+        <a href="<%= "/phases/#{@phase["slug"]}/#{@item_prev["slug"]}" %>">
           <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
           <%=@item_prev["title"]%>
         </a>
@@ -12,7 +12,7 @@
   <div class="col-xs-6 col-md-6" style="text-align: right;">
     <% if @item_next %>
       <h5>
-        <a href="/item/<%=@item_next["slug"]%>">
+        <a href="<%= "/phases/#{@phase["slug"]}/#{@item_next["slug"]}" %>">
           <%=@item_next["title"]%>
           <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
         </a>

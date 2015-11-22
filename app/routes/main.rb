@@ -72,22 +72,6 @@ class Flippd < Sinatra::Application
         # Quizzes are optional
         if not topic["quizzes"].nil?
           topic['quizzes'].each do |quiz|
-
-            # Validation
-            if quiz['questions'].length == 0
-              raise 'Quiz must have at least 1 question'
-            end
-
-            quiz['questions'].each do |question|
-              if question['answers'].length <= 1
-                raise 'Question must have at least 2 answers'
-              end
-
-              if question['correct_answer'].nil?
-                raise 'Question must have a correct answer'
-              end
-            end
-
             quiz["type"] = :quiz
             quiz["phase"] = phase
             quiz["topic"] = topic

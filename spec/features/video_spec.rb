@@ -13,7 +13,7 @@ feature "A video page" do
 
   it "contains navigation links" do
     expect(page).to have_link 'Ruby', href: "/phases/fundamentals/ruby"
-    expect(page).to have_link 'Planning vs. reacting', href: "/phases/fundamentals/planning-vs-reacting"
+    expect(page).to have_link 'Ruby Quiz', href: '/phases/fundamentals/ruby-quiz'
   end
 
   it "contains links to additional material" do

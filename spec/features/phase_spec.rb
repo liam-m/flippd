@@ -42,8 +42,12 @@ feature "A phase page" do
   it "contains a link to every quiz in this phase" do
     titles = ['Ruby Quiz']
 
-    titles.each_with_index do |title, index|
-      expect(page).to have_link title, href: "/quizzes/#{index+1}"
+    titles.each do |title|
+      slug = title
+                 .downcase
+                 .gsub( /[^a-z0-9 ]/, "" )
+                 .gsub( " ", "-" )
+      expect(page).to have_link title, href: "/phases/fundamentals/#{slug}"
     end
   end
 end

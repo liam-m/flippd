@@ -1,5 +1,5 @@
 feature "A video page" do
-  before(:each) { visit('/videos/2') }
+  before(:each) { visit('/phases/fundamentals/ruby-gems') }
 
   it "contains the video's title" do
     within('#main h1') do
@@ -12,8 +12,8 @@ feature "A video page" do
   end
 
   it "contains navigation links" do
-    expect(page).to have_link 'Ruby', href: "/videos/1"
-    expect(page).to have_link 'Planning vs. reacting', href: "/videos/3"
+    expect(page).to have_link 'Ruby', href: "/phases/fundamentals/ruby"
+    expect(page).to have_link 'Planning vs. reacting', href: "/phases/fundamentals/planning-vs-reacting"
   end
 
   it "contains links to additional material" do
@@ -24,15 +24,15 @@ feature "A video page" do
 
   context "for the first video" do
     it "contains a forward navigation link" do
-      visit('/videos/1')
-      expect(page).to have_link 'Ruby Gems', href: "/videos/2"
+      visit('/phases/fundamentals/ruby')
+      expect(page).to have_link 'Ruby Gems', href: "/phases/fundamentals/ruby-gems"
     end
   end
 
   context "for the last video" do
     it "contains a backward navigation link" do
-      visit('/videos/31')
-      expect(page).to have_link 'Middleware', href: "/videos/30"
+      visit('/phases/habitable-programs/plugins')
+      expect(page).to have_link 'Middleware', href: "/phases/habitable-programs/middleware"
     end
   end
 end

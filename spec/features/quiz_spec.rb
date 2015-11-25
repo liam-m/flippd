@@ -1,5 +1,5 @@
 feature "A quiz page" do
-  before(:each) { visit('/quizzes/1') }
+  before(:each) { visit('/phases/fundamentals/ruby-quiz') }
 
   it "contains the quiz's title" do
     within('#main h1') do

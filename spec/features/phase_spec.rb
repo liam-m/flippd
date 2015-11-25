@@ -30,8 +30,12 @@ feature "A phase page" do
               'Planning vs. reacting', 'TDD and RSpec', 'Test doubles',
               'Ruby Parser', 'Vagrant', 'Git']
 
-    titles.each_with_index do |title, index|
-      expect(page).to have_link title, href: "/videos/#{index+1}"
+    titles.each do |title|
+      slug = title
+                 .downcase
+                 .gsub( /[^a-z0-9 ]/, "" )
+                 .gsub( " ", "-" )
+      expect(page).to have_link title, href: "/phases/fundamentals/#{slug}"
     end
   end
 

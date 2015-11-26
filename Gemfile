@@ -20,4 +20,6 @@ group :test do
   gem "capybara", "~> 2.4.4"
   gem "rspec", "~> 3.3.0"
   gem "database_cleaner", "~> 1.5.1"
+  gem "simplecov", "~>0.10.0"
+  gem 'simplecov-console', "~>0.2.0"
 end

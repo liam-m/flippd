@@ -8,9 +8,9 @@ feature "Signing out" do
 
   context "redirects" do
     it "to the current page after signing out" do
-      visit '/videos/1'
+      visit '/phases/fundamentals/ruby'
       sign_out
-      expect(current_path).to eq('/videos/1')
+      expect(current_path).to eq('/phases/fundamentals/ruby')
     end
 
     it "to the root page after signing out directly" do

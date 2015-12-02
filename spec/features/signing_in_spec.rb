@@ -31,13 +31,13 @@ feature "Signing in" do
 
   context "redirects" do
     it "to the current page after signing in" do
-      sign_in from: '/videos/1'
-      expect(current_path).to eq('/videos/1')
+      sign_in from: '/phases/fundamentals/ruby'
+      expect(current_path).to eq('/phases/fundamentals/ruby')
     end
 
     it "to the current page after failing to sign in" do
-      fail_to_sign_in from: '/videos/1'
-      expect(current_path).to eq('/videos/1')
+      fail_to_sign_in from: '/phases/fundamentals/ruby'
+      expect(current_path).to eq('/phases/fundamentals/ruby')
     end
 
     it "to the root page after signing in directly" do

@@ -29,10 +29,31 @@ feature "A video page" do
     end
   end
 
+  context "for the first video in a topic after the first" do
+    it "contains a link to the last quiz of the previous topic" do
+      visit('/phases/fundamentals/planning-vs-reacting')
+      expect(page).to have_link 'Ruby Quiz 2', href: "/phases/fundamentals/ruby-quiz-2"
+    end
+
+    context "when the previous topic has no quiz" do
+      it "contains a link to the last video of the previous topic" do
+        visit('/phases/fundamentals/ruby-parser')
+        expect(page).to have_link 'Test doubles', href: "/phases/fundamentals/test-doubles"
+      end
+    end
+  end
+
   context "for the last video" do
     it "contains a backward navigation link" do
       visit('/phases/habitable-programs/plugins')
       expect(page).to have_link 'Middleware', href: "/phases/habitable-programs/middleware"
+    end
+  end
+
+  context "for the last video in a phase" do
+    it "contains a link to the first quiz in the phase" do
+      visit('/phases/fundamentals/ruby-gems')
+      expect(page).to have_link 'Ruby Quiz', href: "/phases/fundamentals/ruby-quiz"
     end
   end
 end

@@ -71,7 +71,7 @@ feature "A quiz page" do
         # 2 crosses next to questions
         expect(page).to have_xpath("//span[@class = 'glyphicon glyphicon-remove text-danger']", :count => 2)
 
-        # 2 Pointing fingers next to correct answers
+        # 2 pointing fingers next to correct answers
         expect(page).to have_xpath("//span[@class = 'glyphicon glyphicon-hand-left']", :count => 2)
 
         # 2 thumbs down next to incorrect answers
@@ -82,7 +82,7 @@ feature "A quiz page" do
       end
     end
 
-    context "when the quiz is submitted without answering all questions" do
+    context "when the quiz is submitted without answering any questions" do
       it "displays an error message and indicates each unanswered question" do
         page.click_button('Submit')
         within('#main form') do
@@ -98,25 +98,22 @@ feature "A quiz page" do
         page.click_button('Submit')
         within('#main form') do
           # 0 ticks next to questions
-          expect(page).to have_xpath("//span[@class = 'glyphicon glyphicon-ok text-success']", :count => 0)
+          expect(page).not_to have_xpath("//span[@class = 'glyphicon glyphicon-ok text-success']")
 
           # 0 thumbs up next to answers
-          expect(page).to have_xpath("//span[@class = 'glyphicon glyphicon-thumbs-up']", :count => 0)
-
-          # No progress bar indicating 2/2 and success
-          expect(page).to have_xpath("//div[@class = 'progress-bar progress-bar-success']", :count => 0, :text => "2 / 2")
+          expect(page).not_to have_xpath("//span[@class = 'glyphicon glyphicon-thumbs-up']")
 
           # 0 crosses next to questions
-          expect(page).to have_xpath("//span[@class = 'glyphicon glyphicon-remove text-danger']", :count => 0)
+          expect(page).not_to have_xpath("//span[@class = 'glyphicon glyphicon-remove text-danger']")
 
-          # 0 Pointing fingers next to correct answers
-          expect(page).to have_xpath("//span[@class = 'glyphicon glyphicon-hand-left']", :count => 0)
+          # 0 pointing fingers next to correct answers
+          expect(page).not_to have_xpath("//span[@class = 'glyphicon glyphicon-hand-left']")
 
           # 0 thumbs down next to incorrect answers
-          expect(page).to have_xpath("//span[@class = 'glyphicon glyphicon-thumbs-down']", :count => 0)
+          expect(page).not_to have_xpath("//span[@class = 'glyphicon glyphicon-thumbs-down']")
 
-          # No progress bar indicating 0/2 and failure
-          expect(page).to have_xpath("//div[@class = 'progress-bar progress-bar-danger']", :count => 0, :text => "0 / 2")
+          # No progress bar
+          expect(page).not_to have_selector("div.progress-bar")
         end
       end
     end

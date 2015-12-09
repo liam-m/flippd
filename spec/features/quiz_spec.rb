@@ -117,6 +117,44 @@ feature "A quiz page" do
         end
       end
     end
+
+    context "when the quiz is submitted without answering all questions" do
+      it "displays an error message and indicates each unanswered question" do
+        page.choose('Static')
+        page.click_button('Submit')
+        within('#main form') do
+          # 1 exclamation mark next to questions
+          expect(page).to have_xpath("//span[@class = 'glyphicon glyphicon-exclamation-sign text-primary']", :count => 1)
+
+          # Error message
+          expect(page).to have_content 'Please answer all questions'
+        end
+      end
+
+      it "does not display any feedback on their performance in the quiz" do
+        page.choose('Static')
+        page.click_button('Submit')
+        within('#main form') do
+          # 0 ticks next to questions
+          expect(page).not_to have_xpath("//span[@class = 'glyphicon glyphicon-ok text-success']")
+
+          # 0 thumbs up next to answers
+          expect(page).not_to have_xpath("//span[@class = 'glyphicon glyphicon-thumbs-up']")
+
+          # 0 crosses next to questions
+          expect(page).not_to have_xpath("//span[@class = 'glyphicon glyphicon-remove text-danger']")
+
+          # 0 pointing fingers next to correct answers
+          expect(page).not_to have_xpath("//span[@class = 'glyphicon glyphicon-hand-left']")
+
+          # 0 thumbs down next to incorrect answers
+          expect(page).not_to have_xpath("//span[@class = 'glyphicon glyphicon-thumbs-down']")
+
+          # No progress bar
+          expect(page).not_to have_selector("div.progress-bar")
+        end
+      end
+    end
   end
 
   context "navigation" do

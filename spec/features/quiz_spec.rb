@@ -61,6 +61,65 @@ feature "A quiz page" do
         expect(page).to have_xpath("//div[@class = 'progress-bar progress-bar-success']", :count => 1, :text => "2 / 2")
       end
     end
+
+    it "gives inline and overall feedback when the quiz is completed incorrectly" do
+      page.choose('Static')
+      page.choose('Test Develop Drive')
+      page.click_button('Submit')
+
+      within('#main form') do
+        # 2 crosses next to questions
+        expect(page).to have_xpath("//span[@class = 'glyphicon glyphicon-remove text-danger']", :count => 2)
+
+        # 2 Pointing fingers next to correct answers
+        expect(page).to have_xpath("//span[@class = 'glyphicon glyphicon-hand-left']", :count => 2)
+
+        # 2 thumbs down next to incorrect answers
+        expect(page).to have_xpath("//span[@class = 'glyphicon glyphicon-thumbs-down']", :count => 2)
+
+        # Progress bar indicating 0/2 and failure
+        expect(page).to have_xpath("//div[@class = 'progress-bar progress-bar-danger']", :count => 1, :text => "0 / 2")
+      end
+    end
+
+    context "when the quiz is submitted without answering all questions" do
+      it "displays an error message and indicates each unanswered question" do
+        page.click_button('Submit')
+        within('#main form') do
+          # 2 exclamation marks next to questions
+          expect(page).to have_xpath("//span[@class = 'glyphicon glyphicon-exclamation-sign text-primary']", :count => 2)
+
+          # Error message
+          expect(page).to have_content 'Please answer all questions'
+        end
+      end
+
+      it "does not display any feedback on their performance in the quiz" do
+        page.click_button('Submit')
+        within('#main form') do
+          # 0 ticks next to questions
+          expect(page).to have_xpath("//span[@class = 'glyphicon glyphicon-ok text-success']", :count => 0)
+
+          # 0 thumbs up next to answers
+          expect(page).to have_xpath("//span[@class = 'glyphicon glyphicon-thumbs-up']", :count => 0)
+
+          # No progress bar indicating 2/2 and success
+          expect(page).to have_xpath("//div[@class = 'progress-bar progress-bar-success']", :count => 0, :text => "2 / 2")
+
+          # 0 crosses next to questions
+          expect(page).to have_xpath("//span[@class = 'glyphicon glyphicon-remove text-danger']", :count => 0)
+
+          # 0 Pointing fingers next to correct answers
+          expect(page).to have_xpath("//span[@class = 'glyphicon glyphicon-hand-left']", :count => 0)
+
+          # 0 thumbs down next to incorrect answers
+          expect(page).to have_xpath("//span[@class = 'glyphicon glyphicon-thumbs-down']", :count => 0)
+
+          # No progress bar indicating 0/2 and failure
+          expect(page).to have_xpath("//div[@class = 'progress-bar progress-bar-danger']", :count => 0, :text => "0 / 2")
+        end
+      end
+    end
   end
 
   context "navigation" do

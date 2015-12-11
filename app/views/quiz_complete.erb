@@ -53,8 +53,11 @@
               >
 
             <!-- Text Answer -->
-            <% if not result_set[0] and answer_index == result_set[2] %>
-              <!-- Show actual correct answer if incorrect -->
+            <% if answer_index == result_set[2] %>
+              <!-- Highlights correct answer in green -->
+              <span style="color:green" >
+            <% elsif not result_set[0] and answer_index == result_set[1] %>
+            <!-- Highlights incorrect answer in red -->
               <span style="color:red" >
             <% else %>
               <span>

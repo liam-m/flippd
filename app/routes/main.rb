@@ -62,21 +62,15 @@ class Flippd < Sinatra::Application
         topic["id"] = topic_id
         topic_id += 1
 
-        topic['videos'].each do |video|
-          video["type"] = :video
-          video["phase"] = phase
-          video["topic"] = topic
-          generateIds.call( video )
-        end
-
-        # Quizzes are optional
-        if not topic["quizzes"].nil?
-          topic['quizzes'].each do |quiz|
-            quiz["type"] = :quiz
-            quiz["phase"] = phase
-            quiz["topic"] = topic
-            generateIds.call( quiz )
+        topic['items'].each do |item|
+          if item['type'] == 'video'
+            item["type"] = :video
+          elsif item['type'] == 'quiz'
+            item["type"] = :quiz
           end
+          item["phase"] = phase
+          item["topic"] = topic
+          generateIds.call( item )
         end
       end
     end

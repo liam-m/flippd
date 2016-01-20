@@ -23,6 +23,48 @@
 </div>
 <% end %>
 
+<div id="comments" class="row" style="margin-top: 1em;">
+  <div class="col-xs-6 col-md-6">
+    <h4>2 comments</h4>
+  </div>
+</div>
+
+<div id="comments_form" class="row" style="margin-top: 1em; margin-bottom: 2em;">
+  <div class="col-xs-2 col-md-2">
+    <img src="http://placehold.it/100x100">
+  </div>
+  <div class="col-xs-10 col-md-10">
+    <form action="/videos/<%=@item["id"]%>/comments" method="POST">
+      <div class="form-group">
+        <textarea id="new_comment" class="form-control" rows="4"></textarea>
+      </div>
+      <button type="submit" class="btn btn-default pull-right">Post</button>
+    </form>
+  </div>
+</div>
+
+<div id="comment_1" class="row comment" class="row" style="margin-bottom: 2em;">
+  <div class="col-xs-2 col-md-2" style="padding-top: 10px;">
+    <img src="http://placehold.it/100x100">
+  </div>
+  <div class="col-xs-10 col-md-10">
+    <h5>Joe Bloggs</h5>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <h6>15/01/16 09:07</h6>
+  </div>
+</div>
+
+<div id="comment_2" class="row comment" class="row" style="margin-bottom: 2em;">
+  <div class="col-xs-2 col-md-2" style="padding-top: 10px;">
+    <img src="http://placehold.it/100x100">
+  </div>
+  <div class="col-xs-10 col-md-10">
+    <h5>Jane Doe</h5>
+    <p>Lorem ipsum dolor sit amet!</p>
+    <h6>16/01/16 21:42</h6>
+  </div>
+</div>
+
 <script>
   // 2. This code loads the IFrame Player API code asynchronously.
   var tag = document.createElement('script');

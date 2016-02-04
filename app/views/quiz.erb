@@ -12,26 +12,26 @@
       <div class="form-group">
         <h3>
           <!-- Checkmark or cross at start of each question on submit -->
-          <% if not @submission_error.nil? and not result_set[3] %>
+          <% if not @submission_error.nil? and result_set[:no_answer] %>
             <span class="glyphicon glyphicon-exclamation-sign text-primary"></span>
           <% end %>
           <%= ( question_index + 1 ).to_s + ". " + question['question']%>
         </h3>
 
         <% question['answers'].each_with_index do |answer, answer_index| %>
-        <div class="radio">
-          <label>
-            <!-- Radio Button -->
-            <input
-              type="radio"
-              name="q<%=question_index%>"
-              value="<%=answer_index%>"
-              <%= result_set and result_set[1] == answer_index and "checked" or "" %>
+          <div class="radio">
+            <label>
+              <!-- Radio Button -->
+              <input
+                type="radio"
+                name="q<%=question_index%>"
+                value="<%=answer_index%>"
+                <%= result_set and result_set[:selected] == answer_index and "checked" or "" %>
 
-            <!-- Text Answer -->
-            <%= answer %>
-          </label>
-        </div>
+              <!-- Text Answer -->
+              <%= answer %>
+            </label>
+          </div>
         <% end %>
       </div>
   <% end %>

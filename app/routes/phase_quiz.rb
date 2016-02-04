@@ -20,21 +20,17 @@ class Flippd < Sinatra::Application
       if ans.nil?
         @submission_error = "Please answer all questions"
 
-        @results[ index ] = [
-          false,
-          ans,
-          0,
-          true
-        ]
+        @results[ index ] = {
+          no_answer: true
+        }
       else
         ans = ans.to_i
 
-        @results[ index ] = [
-          ans == question[ "correct_answer" ],
-          ans,
-          question[ "correct_answer" ],
-          false
-        ]
+        @results[ index ] = {
+          correct: ans == question[ "correct_answer" ],
+          selected: ans,
+          answer: question[ "correct_answer" ]
+        }
       end
 
       @correct_num += 1 if ans == question[ "correct_answer" ]

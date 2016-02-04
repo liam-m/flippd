@@ -10,7 +10,7 @@
         <h3>
           <!-- Checkmark or cross at start of each question on submit -->
           <% if result_set %>
-            <% if result_set[0]  %>
+            <% if result_set[:correct]  %>
               <span class="glyphicon glyphicon-ok text-success"></span>
             <% else %>
               <span class="glyphicon glyphicon-remove text-danger"></span>
@@ -28,14 +28,14 @@
               name="q<%=question_index%>"
               value="<%=answer_index%>"
               disabled
-              <%= result_set and result_set[1] == answer_index and "checked" or "" %>
+              <%= result_set and result_set[:selected] == answer_index and "checked" or "" %>
               >
 
             <!-- Text Answer -->
-            <% if answer_index == result_set[2] %>
+            <% if answer_index == result_set[:answer] %>
               <!-- Highlights correct answer in green -->
               <span style="color:green" >
-            <% elsif not result_set[0] and answer_index == result_set[1] %>
+            <% elsif not result_set[:correct] and answer_index == result_set[:selected] %>
             <!-- Highlights incorrect answer in red -->
               <span style="color:red" >
             <% else %>
@@ -46,13 +46,13 @@
 
             <!-- Indicator Icon -->
             <% if result_set %>
-              <% if result_set[0] and answer_index == result_set[2] %>
+              <% if result_set[:correct] and answer_index == result_set[:selected] %>
                 <!-- Show thumbs up if Answer correct -->
                 <span class="glyphicon glyphicon-thumbs-up"></span>
-              <% elsif not result_set[0] and answer_index == result_set[1] %>
+              <% elsif not result_set[:correct] and answer_index == result_set[:selected] %>
                 <!-- Show thumbs down Answer incorrect -->
                 <span class="glyphicon glyphicon-thumbs-down"></span>
-              <% elsif not result_set[0] and answer_index == result_set[2] %>
+              <% elsif not result_set[:correct] and answer_index == result_set[:answer] %>
                 <!-- Show actual correct answer if incorrect -->
                 <span class="glyphicon glyphicon-hand-left"></span>
               <% end %>

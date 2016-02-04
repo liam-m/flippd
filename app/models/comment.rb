@@ -5,5 +5,6 @@ class Comment
   property :timestamp, DateTime, required: true
   property :text, Text, required: true
 
-  belongs_to :user
+  property :item_slug, Text, required: true
+  belongs_to :user, 'User'
 end

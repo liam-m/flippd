@@ -34,9 +34,9 @@
     <img src="http://placehold.it/100x100">
   </div>
   <div class="col-xs-10 col-md-10">
-    <form action="/videos/<%=@item["id"]%>/comments" method="POST">
+    <form action="<%=request.path_info%>/comment" method="POST">
       <div class="form-group">
-        <textarea id="new_comment" class="form-control" rows="4"></textarea>
+        <textarea id="new_comment" name="new_comment" class="form-control" rows="4" required></textarea>
       </div>
       <button type="submit" class="btn btn-default pull-right">Post</button>
     </form>

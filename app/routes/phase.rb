@@ -8,6 +8,8 @@ class Flippd < Sinatra::Application
   attr_accessor :item_next
   attr_accessor :item_prev
 
+  attr_accessor :comments
+
   # HACK: This slug should work as /phases/*, and yet, doesn't.
   before '/phases/:title/?*' do
     # TODO: Find some way to pass data from before blocks to routes
@@ -26,6 +28,8 @@ class Flippd < Sinatra::Application
     if @item
       @item_next = @items[ @item["id"].to_i + 1 ]
       @item_prev = @items[ @item["id"].to_i - 1 ]
+
+      @comments = Comment.all(:item_slug => @item["slug"], :order => [ :timestamp.desc ])
     end
   end
 

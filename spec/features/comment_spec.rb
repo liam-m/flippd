@@ -26,11 +26,10 @@ feature "Commenting on items" do
       visit('/phases/fundamentals/ruby-gems')
     end
 
-    it "doesn't display the comment form" do
-      expect(page).not_to have_xpath("//div[@id = 'comments_form']")
-      expect(page).not_to have_xpath("//form")
-      expect(page).not_to have_xpath("//textarea[@id = 'new_comment']")
-      expect(page).not_to have_xpath("//button[@type = 'submit']")
+    it "shows the comment form in a disabled state and prompts to sign in" do
+      expect(page).to have_xpath("//textarea[@id = 'new_comment' and @disabled]")
+      expect(page).to have_xpath("//button[@type = 'submit' and @disabled]")
+      expect(page).to have_content 'Sign in to post a comment.'
     end
   end
 

@@ -11,7 +11,7 @@ class Flippd < Sinatra::Application
     @comment_text = params[:new_comment]
     @new_comment = Comment.create(:timestamp => DateTime.now, :text => @comment_text, :item_slug => @item["slug"], :user => @user)
 
-    redirect to(env["HTTP_REFERER"])
+    redirect to(env["HTTP_REFERER"] + "#comments")
 
   end
 

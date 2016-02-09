@@ -1,6 +1,11 @@
 require 'dotenv'
 Dotenv.load
 
+# Load all helpers
+helpers_directory = File.dirname(__FILE__) + "/helpers/"
+helper_files = Dir[helpers_directory + "*.rb"]
+helper_files.each { |f| require f }
+
 require_relative 'db/init'
 
 require 'sinatra'

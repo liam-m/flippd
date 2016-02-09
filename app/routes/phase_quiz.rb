@@ -6,8 +6,7 @@ class Flippd < Sinatra::Application
 
   post '/phases/:title/:slug' do
 
-    pass unless @item
-    pass unless @item["type"] == :quiz
+    must_be_a :quiz
 
     @results = []
     @correct_num = 0

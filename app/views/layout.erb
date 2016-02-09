@@ -36,7 +36,12 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <% if @user %>
-              <li class="dropdown">
+              <style>
+                #auth-nav {
+                  height: 0;
+                }
+              </style>
+              <li class="dropdown" id="auth-nav">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                   <img src=<%=@user[:image]%> style="width:24px;height:24px;"> <%=@user[:email]%> <span class="caret"></span>
                 </a>

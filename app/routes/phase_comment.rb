@@ -8,8 +8,12 @@ class Flippd < Sinatra::Application
     pass unless @item["type"] == :video
     pass unless @user
 
-    @comment_text = params[:new_comment]
-    @new_comment = Comment.create(:timestamp => DateTime.now, :text => @comment_text, :item_slug => @item["slug"], :user => @user)
+    Comment.create(
+      timestamp: DateTime.now,
+      text: params[:new_comment],
+      item_slug: @item["slug"],
+      user: @user
+    )
 
     redirect to(env["HTTP_REFERER"] + "#comments")
 

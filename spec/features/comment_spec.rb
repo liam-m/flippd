@@ -51,8 +51,9 @@ feature "Commenting on items" do
         expect(page).to have_content 'Test comment text'
 
         date_time = page.find('h6').text
-        # TODO: Fix race condition
-        expect(date_time).to eq DateTime.now.strftime("%d/%m/%y %H:%M")
+        # Time could have ticked over to the minute after the comment was created, so check it's within the last minute
+        expected_date_times = [DateTime.now - Rational(1, 24*60), DateTime.now].map {|dt| dt.strftime("%d/%m/%y %H:%M")}
+        expect(expected_date_times).to include date_time
       end
     end
   end

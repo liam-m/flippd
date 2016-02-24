@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+require "gli"
+require_relative "../lib/size"
+
+include GLI::App
+
+program_desc "Size metrics for Ruby projects"
+
+desc 'Measures files'
+arg 'root', :optional
+command :files do |c|
+  c.action do |_, _, args|
+    root = args.empty? ? Dir.pwd : File.expand_path(args.first)
+    Measurement::FileMeasurer.new(root).run
+  end
+end
+
+desc 'Measures classes'
+arg 'root', :optional
+command :classes do |c|
+  c.action do |_, _, args|
+    root = args.empty? ? Dir.pwd : File.expand_path(args.first)
+    Measurement::ClassMeasurer.new(root).run
+  end
+end
+
+desc 'Measures methods'
+arg 'root', :optional
+command :methods do |c|
+  c.action do |_, _, args|
+    root = args.empty? ? Dir.pwd : File.expand_path(args.first)
+    Measurement::MethodMeasurer.new(root).run
+  end
+end
+
+exit run(ARGV)

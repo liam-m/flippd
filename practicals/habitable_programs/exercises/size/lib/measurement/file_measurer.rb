@@ -24,15 +24,33 @@ module Measurement
     end
 
     def count_lines_of_code(file)
-      "?"
+      file.source.lines.to_a.size
+    end
+
+    def count_in_ast(ast, sym)
+      n = 0
+
+      if not ast.respond_to?(:type)
+        return 0
+      end
+
+      if ast.type == sym
+        n += 1
+      end
+
+      if ast.respond_to?(:children)
+        ast.children.each { |child| n += count_in_ast(child, sym) }
+      end
+
+      return n
     end
 
     def count_modules(file)
-      "?"
+      count_in_ast(file.ast, :module)
     end
 
     def count_classes(file)
-      "?"
+      count_in_ast(file.ast, :class)
     end
   end
 end

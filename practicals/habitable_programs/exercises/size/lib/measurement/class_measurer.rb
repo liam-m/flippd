@@ -3,10 +3,10 @@ require_relative "../../../common/lib/locator/class_locator"
 
 module Measurement
   class ClassCounter < Parser::AST::Processor
-    attr_reader :n_methods, :n_class_methods, :n_attributes
+    attr_reader :n_methods, :n_sinatra_methods, :n_class_methods, :n_attributes
 
     def initialize
-      @n_methods, @n_class_methods, @n_attributes = 0, 0, 0
+      @n_methods, @n_sinatra_methods, @n_class_methods, @n_attributes = 0, 0, 0, 0
     end
 
     def on_def(node)
@@ -22,6 +22,20 @@ module Measurement
     def on_ivasgn(node)
       super(node)
       @n_attributes += 1
+    end
+
+    def on_send(node)
+      super(node)
+      c = node.children
+      sinatra_methods = [:before, :after, :get, :post, :put, :patch, :delete, :options, :link, :unlink, :route]
+      target = c[0]
+      method_name = c[1]
+
+      if target == nil # Sent to self
+        if sinatra_methods.include?(method_name) # Method name is one we care about
+          @n_sinatra_methods += 1
+        end
+      end
     end
   end
 
@@ -46,7 +60,7 @@ module Measurement
     def count_methods(clazz)
       counter = ClassCounter.new
       counter.process(clazz.ast)
-      counter.n_methods
+      counter.n_methods + counter.n_sinatra_methods
     end
 
     def count_class_methods(clazz)

@@ -23,6 +23,11 @@ module Measurement
       super(node)
       @n_parameters += 1
     end
+
+    def on_blockarg(node)
+      super(node)
+      @n_parameters += 1
+    end
   end
 
   class MethodMeasurer < Measurer

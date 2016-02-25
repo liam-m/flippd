@@ -18,7 +18,22 @@ module Subjects
     end
 
     def method_name
-      ast.children.first.to_s
+      if ast.type == :block
+        target = ast.children[0]
+
+        method_name = target.children[1]
+
+        if target.children[0].nil?
+          if [:get, :post].include?(method_name)
+            route = target.children[2].children[0]
+            method_name.to_s + ' \'' + route + '\''
+          else
+            method_name
+          end
+        end
+      else
+        ast.children.first.to_s
+      end
     end
   end
 end

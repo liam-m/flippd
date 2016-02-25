@@ -22,6 +22,21 @@ module Locator
         super(node)
         @methods << Subjects::Method.new(@source_file, node)
       end
+
+      def on_block(node)
+        super(node)
+        sinatra_methods = [:before, :after, :get, :post, :put, :patch, :delete, :options, :link, :unlink, :route]
+        first_child = node.children[0]
+
+        target = first_child.children[0]
+        method_name = first_child.children[1]
+
+        if target.nil? # To self
+          if sinatra_methods.include?(method_name) # We care about the method
+              @methods << Subjects::Method.new(@source_file, node)
+          end
+        end
+      end
     end
   end
 end

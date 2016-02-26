@@ -20,6 +20,7 @@ module Measurement
     def process(clazz)
       processor = ClassProcessor.new(clazz.ast)
       processor.process(clazz.ast)
+      processor.add_instance_var_dependencies
       processor.dependencies
     end
   end
@@ -27,6 +28,7 @@ module Measurement
   class ClassProcessor < Parser::AST::Processor
     def initialize(root)
       @root = root
+      @ivars_used_by_methods = {}
     end
 
     # Ignore nested modules
@@ -43,11 +45,26 @@ module Measurement
       method_processor = MethodProcessor.new
       method_processor.process(ast)
 
-      method_processor.methods_to_self.each do |method|
-        dependencies.add(ast.children[0], method)
+      method_processor.instance_vars_used.each do |ivar|
+        @ivars_used_by_methods[ivar] ||= []
+        @ivars_used_by_methods[ivar] << ast.children[0]
       end
 
+      dependencies.add_all(ast.children[0], method_processor.methods_to_self)
+
       super
+    end
+
+    def add_instance_var_dependencies
+      @ivars_used_by_methods.each do |ivar, methods|
+        methods.each do |method|
+          methods.each do |method2|
+            unless method == method2 then
+              dependencies.add(method, method2)
+            end
+          end
+        end
+      end
     end
 
     def dependencies
@@ -64,10 +81,10 @@ module Measurement
     # and ClassProcessor would associate the array with :bake in the DependencyGraph.
     # (Note that the message top! is sent to @toppings and not to self).
 
-    attr_reader :methods_to_self
+    attr_reader :methods_to_self, :instance_vars_used
 
     def initialize
-      @methods_to_self = []
+      @methods_to_self, @instance_vars_used = [], []
     end
 
     def on_send(node)
@@ -76,6 +93,18 @@ module Measurement
       if node.children[0].nil? # Send to self
         @methods_to_self << node.children[1]
       end
+    end
+
+    def on_ivasgn(node)
+      super(node)
+
+      @instance_vars_used << node.children[0]
+    end
+
+    def on_ivar(node)
+      super(node)
+
+      @instance_vars_used << node.children[0]
     end
   end
 end

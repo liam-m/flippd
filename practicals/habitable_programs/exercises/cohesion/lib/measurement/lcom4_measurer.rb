@@ -55,6 +55,30 @@ module Measurement
       super
     end
 
+    def on_block(node)
+      target = node.children[0]
+      sinatra_methods = [:before, :after, :get, :post, :put, :patch, :delete, :options, :link, :unlink, :route]
+
+      if target.children[0].nil? and sinatra_methods.include?(target.children[1]) then
+        code = node.children[2]
+        method_processor = MethodProcessor.new
+        method_processor.process(code)
+
+        method_name = if [:get, :post].include?(target.children[1]) then
+                        (target.children[1].to_s + ' ' + target.children[2].children[0]).to_sym
+                      else
+                        target.children[1]
+                      end
+
+        method_processor.instance_vars_used.each do |ivar|
+          @ivars_used_by_methods[ivar] ||= []
+          @ivars_used_by_methods[ivar] << method_name
+        end
+
+        dependencies.add_all(method_name, method_processor.methods_to_self)
+      end
+    end
+
     def add_instance_var_dependencies
       @ivars_used_by_methods.each do |ivar, methods|
         methods.each do |method|

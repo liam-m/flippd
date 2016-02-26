@@ -1,3 +1,15 @@
+def interesting?(frag)
+    # If all lines in the fragment are simply the "end, class, module and self" keywords, it is not interesting
+    # also return and pass
+    frag.each do |line|
+        unless ["end", "class", "module", "self", "return"].include?(line.strip.split(" ")[0])
+            return true
+        end
+    end
+
+    false
+end
+
 module Subjects
   # Represents a piece of source code, which (probably) came from a file
   class Source
@@ -9,20 +21,49 @@ module Subjects
     attr_reader :file
 
     def initialize(lines, file = nil)
-      @lines, @file = lines, file
+      @lines, @file = lines.to_a, file
     end
 
     # Returns a fragment that is common to `self` and `other_source` and that is
     # longer than any other common fragment. Note that when `self` and `other_source`
     # have no common fragments, a zero-length fragment (`[]`) is returned.
-    def longest_common_fragment_with(other_source)
+    def longest_common_fragment_with(other_source, threshold=2)
+      lines.size.downto(threshold) do |fragment_size|
+        common_fragment = common_fragment_with(other_source, fragment_size)
+        if not common_fragment.nil?
+          return common_fragment
+        end
+      end
+
       []
+    end
+
+    def all_common_fragments_with(other_source, threshold=2)
+      # TODO: An outstanding implementation of this method will ensure that the results
+      # contain no overlapping fragments. For example, if hello_world.rb:5-20 is a
+      # fragment, then hello_world.rb:6-19 should not be returned (because the latter is
+      # wholly contained in the former).
+
+      common_fragments = []
+
+      lines.size.downto(threshold) do |fragment_size|
+        fragments(fragment_size).select { |frag| interesting?(frag) }.each do |f1|
+          other_source.fragments(fragment_size).each do |f2|
+            if f1 == f2
+              common_fragments << f1
+              break
+            end
+          end
+        end
+      end
+
+      common_fragments
     end
 
     # Returns a fragments that appear in both `self` and in `other_source`
     # of the specified size.
     def common_fragment_with(other_source, fragment_size)
-      []
+      all_common_fragments_with(other_source).select { |common_fragment| common_fragment.size == fragment_size }.first
     end
 
     # Returns all fragments of a given size, where a fragment is an array containing

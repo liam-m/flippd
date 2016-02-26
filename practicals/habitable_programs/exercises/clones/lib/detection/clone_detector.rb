@@ -17,7 +17,7 @@ module Detection
     def clones_for(file)
       @project
        .files_other_than(file)
-       .flat_map { |other_file| clones_between(file.source, other_file.source) }
+       .flat_map { |other_file| clones_between(file.parameterized_source, other_file.parameterized_source) }
        .sort
        .reverse
     end
@@ -30,12 +30,8 @@ module Detection
     end
 
     def clones_between(source, other_source)
-      longest_common_fragment = source.longest_common_fragment_with(other_source)
-
-      if longest_common_fragment.empty?
-        []
-      else
-        [Clone.new(source, other_source, longest_common_fragment)]
+      source.all_common_fragments_with(other_source).map do |common_fragment|
+        Clone.new(source, other_source, common_fragment)
       end
     end
   end

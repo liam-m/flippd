@@ -11,7 +11,7 @@ module Detection
     end
 
     def to_s
-      "#{@other.file}:#{location(@other)} matches #{location(@original)}:\n" + @fragment.join
+      "#{@other.file}:#{location(@other)} matches #{@original.file}:#{location(@original)}:\n" + @fragment.join
     end
 
     def <=>(other)
@@ -21,9 +21,9 @@ module Detection
     private
 
     def location(source)
-      start = starting_line_in(source)
-      finish = start + @fragment.size
-      "#{start}..#{finish}"
+      start = starting_line_in(source)+1
+      finish = start + @fragment.size-1
+      "#{start}...#{finish}"
     end
 
     def starting_line_in(source)

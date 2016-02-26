@@ -32,6 +32,15 @@ module Subjects
       Source.new(normalized, self)
     end
 
+    def parameterized_source
+      # TODO: Preprocess the AST to replace any concrete module, class, method, attribute
+      # and variable names with a constant (e.g., module Measurement -> module M and
+      # module Detection -> module D). This will allow clone detection for semantically
+      # equivalent but syntactically different fragments.
+
+      normalized_source
+    end
+
     def to_s
       project.relative_path_to(path)
     end

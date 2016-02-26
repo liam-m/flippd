@@ -1,13 +1,13 @@
 def interesting?(frag)
-    # If all lines in the fragment are simply the "end, class, module and self" keywords, it is not interesting
-    # also return and pass
+    # If ANY of the lines is the "end, class, module, return or self" keyword, it is not interesting.
+    # This prevents clones containing these common keywords as they are not interesting.
     frag.each do |line|
-        unless ["end", "class", "module", "self", "return"].include?(line.strip.split(" ")[0])
-            return true
+        if ["end", "class", "module", "self", "return"].include?(line.strip.split(" ")[0])
+            return false
         end
     end
 
-    false
+    true
 end
 
 module Subjects

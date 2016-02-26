@@ -42,6 +42,8 @@ module Measurement
     end
 
     def on_def(ast)
+      return if ast.children[0] == :initialize
+
       method_processor = MethodProcessor.new
       method_processor.process(ast)
 

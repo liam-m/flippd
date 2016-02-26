@@ -42,7 +42,11 @@ module Measurement
     def on_def(ast)
       method_processor = MethodProcessor.new
       method_processor.process(ast)
-      # TODO: populate "dependencies" object
+
+      method_processor.methods_to_self.each do |method|
+        dependencies.add(ast.children[0], method)
+      end
+
       super
     end
 
@@ -52,6 +56,26 @@ module Measurement
   end
 
   class MethodProcessor < Parser::AST::Processor
-    # TODO
+    # MethodProcessor will be responsible for recognising when a send statement has been
+    # encountered in a specific method's AST, checking to see if the message is being sent
+    # to self (i.e., a method defined on the current class is being invoked), and returning
+    # a set of all of the messages sent to self. For example, when applied to the following
+    # method, MethodProcessor would return the following array of messages: [:roll, :cook]
+    # and ClassProcessor would associate the array with :bake in the DependencyGraph.
+    # (Note that the message top! is sent to @toppings and not to self).
+
+    attr_reader :methods_to_self
+
+    def initialize
+      @methods_to_self = []
+    end
+
+    def on_send(node)
+      super(node)
+
+      if node.children[0].nil? # Send to self
+        @methods_to_self << node.children[1]
+      end
+    end
   end
 end

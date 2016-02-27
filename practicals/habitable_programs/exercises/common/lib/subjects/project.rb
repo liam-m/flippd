@@ -13,7 +13,9 @@ module Subjects
       if root.end_with?(".rb")
         [SourceFile.new(root, self)]
       else
-        Dir.glob("#{root}/**/*.rb").map { |f| SourceFile.new(f, self) }
+        Dir.glob("#{root}/**/*.rb")
+          .reject { |f| f.include?('/spec/') } # filter out tests
+          .map { |f| SourceFile.new(f, self) }
       end
     end
 

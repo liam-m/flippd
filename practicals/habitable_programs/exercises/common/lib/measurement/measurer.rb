@@ -5,7 +5,7 @@ module Measurement
   class Measurer
     attr_accessor :subjects
 
-    def initialize(root, result_presenter = Table)
+    def initialize(root, result_presenter = TSV)
       @subjects = locator.find_subjects_in(Subjects::Project.new(root))
       @results = result_presenter.new
     end
@@ -28,7 +28,7 @@ module Measurement
       fail "Must be implemented by subclasses"
     end
   end
-  
+
   class ResultPresenter
     def initialize
       @rows = []
@@ -46,10 +46,16 @@ module Measurement
       @rows.map { |r| row_to_s(r) }.join("\n")
     end
   end
-  
+
   class CSV < ResultPresenter
     def row_to_s(cells)
       cells.join(",")
+    end
+  end
+
+  class TSV < ResultPresenter
+    def row_to_s(cells)
+      cells.join("\t")
     end
   end
 

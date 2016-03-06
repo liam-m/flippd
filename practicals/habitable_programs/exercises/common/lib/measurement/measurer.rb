@@ -5,7 +5,7 @@ module Measurement
   class Measurer
     attr_accessor :subjects
 
-    def initialize(root, result_presenter = TSV)
+    def initialize(root, result_presenter = Table)
       @subjects = locator.find_subjects_in(Subjects::Project.new(root))
       @results = result_presenter.new
     end

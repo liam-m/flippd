@@ -24,7 +24,7 @@ module Measurement
     end
 
     def count_lines_of_code(file)
-      file.source.lines.to_a.size
+      file.source.lines.to_a.select { |s| not s.strip.empty? }.size
     end
 
     def count_in_ast(ast, sym)

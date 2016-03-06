@@ -43,7 +43,7 @@ module Measurement
     end
 
     def count_lines_of_code(method)
-      method.source.lines.to_a.size
+      method.source.lines.to_a.select { |s| not s.strip.empty? }.size
     end
 
     def count_parameters(method)

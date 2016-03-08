@@ -54,7 +54,7 @@ module Measurement
     end
 
     def count_lines_of_code(clazz)
-      clazz.source.lines.to_a.select { |s| not s.strip.empty? }.size
+      clazz.source.lines.to_a.select { |s| not s.strip.empty? and not s.strip.start_with?('#') }.size
     end
 
     def count_methods(clazz)

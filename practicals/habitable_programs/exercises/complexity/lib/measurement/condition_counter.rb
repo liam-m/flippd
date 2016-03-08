@@ -23,7 +23,7 @@ module Measurement
 
     def on_if(node)
         # Only if it has a else
-        if not node.children[2].nil?
+        if not node.children[1].nil? and not node.children[2].nil?
             increment
         end
 

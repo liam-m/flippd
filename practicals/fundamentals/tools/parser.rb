@@ -3,40 +3,51 @@ parser = Parser::CurrentRuby
 
 ast = parser.parse("class Flippd < Sinatra::Application
 
-  attr_accessor :items
-  attr_accessor :urls
+  attr_accessor :results
+  attr_accessor :correct_num
+  attr_accessor :submission_error
 
-  attr_accessor :phase
-  attr_accessor :item
-  attr_accessor :item_next
-  attr_accessor :item_prev
+  post '/phases/:title/:slug' do
 
-  # HACK: This slug should work as /phases/*, and yet, doesn't.
-  before '/phases/:title/?:slug?' do
-    # TODO: Find some way to pass data from before blocks to routes
-    @phase = @phases.find { |x| x['slug'] == params['title'] }
-  end
-
-  get '/phases/:title' do
-    pass unless @phase
-    erb :phase
-  end
-
-  before '/phases/:title/:slug' do
-    return unless @phase
-    @item = @urls[ @phase[ 'slug' ] ][ params[ 'slug' ] ]
-
-    if @item
-      @item_next = @items[ @item['id'].to_i + 1 ]
-      @item_prev = @items[ @item['id'].to_i - 1 ]
-    end
-  end
-
-  get '/phases/:title/:slug' do
     pass unless @item
-    erb @item['type']
+    pass unless @item['type'] == :quiz
+
+    @results = []
+    @correct_num = 0
+    @submission_error = nil
+
+    @item['questions'].each_with_index do | question, index |
+
+      ans = params[ ( 'q' + index.to_s ).to_sym ]
+
+      if ans.nil?
+        @submission_error = 'Please answer all questions'
+
+        @results[ index ] = {
+          no_answer: true
+        }
+      else
+        ans = ans.to_i
+
+        @results[ index ] = {
+          correct: ans == question[ 'correct_answer' ],
+          selected: ans,
+          answer: question[ 'correct_answer' ]
+        }
+      end
+
+      @correct_num += 1 if ans == question[ 'correct_answer' ]
+
+    end
+
+    if @submission_error.nil?
+      erb :quiz_complete
+    else
+      erb :quiz
+    end
+
   end
 
-end)
+end")
 
 p ast

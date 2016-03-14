@@ -57,6 +57,20 @@ module Measurement
       super
     end
 
+    def on_defs(ast)
+      method_processor = MethodProcessor.new
+      method_processor.process(ast)
+
+      method_processor.instance_vars_used.each do |ivar|
+        @ivars_used_by_methods[ivar] ||= []
+        @ivars_used_by_methods[ivar] << ast.children[1]
+      end
+
+      dependencies.add_all(ast.children[1], method_processor.methods_to_self)
+
+      super
+    end
+
     def on_block(node)
       target = node.children[0]
       sinatra_methods = [:before, :after, :get, :post, :put, :patch, :delete, :options, :link, :unlink, :route]

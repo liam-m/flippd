@@ -31,6 +31,8 @@ module Subjects
             method_name
           end
         end
+      elsif ast.type == :defs
+        ast.children[1].to_s
       else
         ast.children.first.to_s
       end

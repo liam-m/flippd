@@ -9,6 +9,7 @@ class Flippd < Sinatra::Application
 
   before do
     JsonParser.parse( self )
+    Badge.populate
   end
 
   # On requesting the home page, display the title page in the data repo.

@@ -3,45 +3,34 @@
 <div class="row">
   <div class="col-md-12" style="padding-top: 15px;">
     <table class="table">
-        <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>XP</th>
-              <th>Level</th>
-            </tr>
-        </thead>
-        <tbody>
-           <tr>
-             <th scope="row">1</th>
-             <td>Joe Bloggs</td>
-             <td>57</td>
-             <td>2</td>
-           </tr>
-           <tr class="info">
-             <th scope="row">2</th>
-             <td>John Smith</td>
-             <td>56</td>
-             <td>1</td>
-           </tr>
-           <tr>
-             <th scope="row">3</th>
-             <td>Jane Doe</td>
-             <td>12</td>
-             <td>1</td>
-           </tr>
-           <tr>
-             <th scope="row">4</th>
-             <td>Christopher Holmes-Jackson</td>
-             <td>1</td>
-             <td>1</td>
-           </tr>
-        </tbody>
-      </table>
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>XP</th>
+        <th>Level</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% users = User.all(:order => [:xp.desc]) %>
+      <% users.each do |user| %>
+          <% if user['id'] == @user['id'] %>
+              <tr class="info">
+          <% else %>
+              <tr>
+          <% end %>
+          <th scope="row">1</th>
+          <td><%= user['name'] %></td>
+          <td><%= user['xp'] %></td>
+          <td><%= user['level'] %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
   </div>
 </div>
 
-<div class="row">
+<!--<div class="row">
   <div class="col-md-8" style="padding-top: 15px;">
     <nav>
       <ul class="pagination">
@@ -69,4 +58,4 @@
       </ul>
     </nav>
   </div>
-</div>
+</div>-->

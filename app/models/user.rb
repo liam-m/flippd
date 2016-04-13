@@ -12,7 +12,7 @@ class User
   property :level_progress, Integer, :default => 0
   property :quizzes_completed, Integer, :default => 0
   property :comments_left, Integer, :default => 0
-  has n, :badges, :through => Resource
+  has n, :badges
 
 
   ## An instance method to perform required calculations for leveling up.
@@ -31,11 +31,11 @@ class User
     new_quizzes_completed = self['quizzes_completed'] + 1
     self.update(:quizzes_completed => new_quizzes_completed)
     if self['quizzes_completed'] == 1
-      badge = Badge.get(:name => 'Completed 1 Quiz')
+      badge = Badge.first(:name => 'Completed 1 Quiz')
     elsif self['quizzes_completed'] == 5
-      badge = Badge.get(:name => 'Completed 5 Quizzes')
+      badge = Badge.first(:name => 'Completed 5 Quizzes')
     elsif self['quizzes_completed'] == 10
-      badge = Badge.get(:name => 'Completed 10 Quizzes')
+      badge = Badge.first(:name => 'Completed 10 Quizzes')
     end
     if badge
       self.badges << badge
@@ -48,14 +48,15 @@ class User
     new_comments_left = (self['comments_left'] + 1)
     self.update(:comments_left => new_comments_left)
     if self['comments_left'] == 1
-      badge = Badge.get(:name => 'Left 1 Comment')
+      badge = Badge.first(:name => 'Left 1 Comment')
     elsif self['comments_left'] == 5
-      badge = Badge.get(:name => 'Left 5 Comments')
+      badge = Badge.first(:name => 'Left 5 Comments')
     elsif self['comments_left'] == 10
-      badge = Badge.get(:name => 'Left 10 Comments')
+      badge = Badge.first(:name => 'Left 10 Comments')
     end
     if badge
-      BadgeUser.create(:user => self, :badge => badge)
+      self.badges << badge
+      self.save
     end
   end
 
@@ -65,4 +66,3 @@ class User
     self.update_level
   end
 end
-

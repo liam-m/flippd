@@ -7,8 +7,6 @@ class Badge
   property :requirement, String, required: true, length: 150
   property :required_value, Integer, required: true
 
-  has n, :users, :through => Resource
-
   ## This would ideally be replaced with a JSON import.
   def Badge.populate
     if Badge.count == 0

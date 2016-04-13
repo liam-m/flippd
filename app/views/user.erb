@@ -16,7 +16,7 @@ Quizzes Completed: <%= @user['quizzes_completed'] %>
 Comments Left: <%= @user['comments_left'] %>
 
 <h3>Badges Earned</h3>
-<div class="row">
+<div class="row" id="badges-earned">
   <% badges_earned = @user.badges %>
   <% if badges_earned %>
       <% badges_earned.each do |badge| %>
@@ -35,7 +35,7 @@ Comments Left: <%= @user['comments_left'] %>
 </div>
 
 <h3>Badges Available</h3>
-<div class="row">
+<div class="row" id="badges-available">
   <% badges = Badge.all -%>
   <% if badges_earned %>
       <% badges_unearned = badges - badges_earned -%>

@@ -12,7 +12,8 @@ class User
   property :level_progress, Integer, :default => 0
   property :quizzes_completed, Integer, :default => 0
   property :comments_left, Integer, :default => 0
-  has n, :badges
+
+  has n, :badges, :through => Resource
 
 
   ## An instance method to perform required calculations for leveling up.

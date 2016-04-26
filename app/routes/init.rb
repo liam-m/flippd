@@ -1,5 +1,7 @@
 require_relative 'auth'
 require_relative 'main'
+require_relative 'user'
+require_relative 'leaderboard'
 
 # Phase routes
 require_relative 'phase'

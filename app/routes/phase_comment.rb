@@ -15,6 +15,8 @@ class Flippd < Sinatra::Application
       user: @user
     )
 
+    @user.increment_comments
+
     redirect to(env["HTTP_REFERER"] + "#comments")
 
   end

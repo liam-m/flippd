@@ -38,6 +38,13 @@ class Flippd < Sinatra::Application
     end
 
     if @submission_error.nil?
+
+      if @user
+        xp = @correct_num * 10
+        @user.earn_xp(xp)
+        @user.increment_quizzes
+      end
+
       erb :quiz_complete
     else
       erb :quiz

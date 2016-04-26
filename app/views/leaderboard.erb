@@ -1,0 +1,31 @@
+<h1>Leaderboard</h1>
+
+<div class="row">
+  <div class="col-md-12" style="padding-top: 15px;">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>XP</th>
+        <th>Level</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% users = User.all(:order => [:xp.desc]) %>
+      <% users.each do |user| %>
+          <% if user['id'] == @user['id'] %>
+              <tr class="info">
+          <% else %>
+              <tr>
+          <% end %>
+          <th scope="row">1</th>
+          <td><%= user['name'] %></td>
+          <td><%= user['xp'] %></td>
+          <td><%= user['level'] %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

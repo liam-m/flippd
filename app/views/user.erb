@@ -1,0 +1,59 @@
+<h1><%= @user['name'] %> - Level <%= @user['level'] %></h1>
+
+<div class="row">
+  <div class="col-md-12" style="padding-top: 15px;">
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" aria-valuenow="<%= @user['level_progress'] %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= @user['level_progress']%>%;">
+        <%= @user['xp'] %> XP - <%= @user['level_progress'] %>% towards
+        Level <%= @user['level'] + 1 %>
+      </div>
+    </div>
+  </div>
+</div>
+
+Quizzes Completed: <%= @user['quizzes_completed'] %>
+<br>
+Comments Left: <%= @user['comments_left'] %>
+
+<h3>Badges Earned</h3>
+<div class="row" id="badges-earned">
+  <% badges_earned = @user.badges %>
+  <% if badges_earned %>
+      <% badges_earned.each do |badge| %>
+          <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+              <img src="/images/<%= badge['image'] %>" alt="...">
+              <div class="caption" style="text-align: center;">
+                <h5><%= badge['name'] %></h5>
+              </div>
+            </div>
+          </div>
+      <% end %>
+  <% else %>
+      <div class="col-sm-6 col-md-4">No badges earned</div>
+  <% end %>
+</div>
+
+<h3>Badges Available</h3>
+<div class="row" id="badges-available">
+  <% badges = Badge.all %>
+  <% if badges_earned %>
+      <% badges_unearned = badges - badges_earned %>
+  <% else %>
+      <% badges_unearned = badges %>
+  <% end %>
+  <% if badges_unearned %>
+      <% badges_unearned.each do |badge| %>
+          <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+              <img src="/images/badge_unearned.png" alt="...">
+              <div class="caption" style="text-align: center;">
+                <h5 style="color: #aaa"><%= badge['name'] %></h5>
+              </div>
+            </div>
+          </div>
+      <% end %>
+  <% else %>
+      <div class="col-sm-6 col-md-4">All badges earned</div>
+  <% end %>
+</div>

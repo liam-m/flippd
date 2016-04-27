@@ -31,14 +31,9 @@ class User
   def increment_quizzes
     new_quizzes_completed = self['quizzes_completed'] + 1
     self.update(:quizzes_completed => new_quizzes_completed)
-    if self['quizzes_completed'] == 1
-      badge = Badge.first(:name => 'Completed 1 Quiz')
-    elsif self['quizzes_completed'] == 5
-      badge = Badge.first(:name => 'Completed 5 Quizzes')
-    elsif self['quizzes_completed'] == 10
-      badge = Badge.first(:name => 'Completed 10 Quizzes')
-    end
-    if badge
+
+    awarded_badges = Badge.all(:requirement => "quizzes_complete", :required_value => new_quizzes_completed)
+    awarded_badges.each do |badge|
       self.badges << badge
       self.save
     end
@@ -48,14 +43,9 @@ class User
   def increment_comments
     new_comments_left = (self['comments_left'] + 1)
     self.update(:comments_left => new_comments_left)
-    if self['comments_left'] == 1
-      badge = Badge.first(:name => 'Left 1 Comment')
-    elsif self['comments_left'] == 5
-      badge = Badge.first(:name => 'Left 5 Comments')
-    elsif self['comments_left'] == 10
-      badge = Badge.first(:name => 'Left 10 Comments')
-    end
-    if badge
+
+    awarded_badges = Badge.all(:requirement => "comments_left", :required_value => new_comments_left)
+    awarded_badges.each do |badge|
       self.badges << badge
       self.save
     end

@@ -35,7 +35,7 @@ module Measurement
     def on_send(ast)
       @total_messages += 1
 
-      if ast.children.first.nil?
+      if ast.children.first.nil? or ast.children.first.type == :self
         @messages_to_self += 1
       elsif ast.children.first == :super
         @messages_to_ancestors += 1

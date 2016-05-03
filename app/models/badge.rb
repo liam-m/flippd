@@ -12,30 +12,19 @@ class Badge
   ## This would ideally be replaced with a JSON import.
   def Badge.populate
     if Badge.count == 0
-      Badge.create(:name => 'Completed 1 Quiz',
-                   :image => "badge.png",
-                   :requirement => "quizzes_complete",
-                   :required_value => 1)
-      Badge.create(:name => "Completed 5 Quizzes",
-                   :image => "badge.png",
-                   :requirement => "quizzes_complete",
-                   :required_value => 5)
-      Badge.create(:name => "Completed 10 Quizzes",
-                   :image => "badge.png",
-                   :requirement => "quizzes_complete",
-                   :required_value => 10)
-      Badge.create(:name => "Left 1 Comment",
-                   :image => "badge.png",
-                   :requirement => "comments_left",
-                   :required_value => 1)
-      Badge.create(:name => "Left 5 Comments",
-                   :image => "badge.png",
-                   :requirement => "comments_left",
-                   :required_value => 5)
-      Badge.create(:name => "Left 10 Comments",
-                   :image => "badge.png",
-                   :requirement => "comments_left",
-                   :required_value => 10)
+      [1, 5, 10].each do |required_value|
+        badge_name = required_value == 1 ? 'Completed 1 Quiz' : "Completed #{required_value} Quizzes"
+        Badge.create(:name => badge_name,
+                     :image => 'badge.png',
+                     :requirement => "quizzes_complete",
+                     :required_value => required_value)
+
+        badge_name = required_value == 1 ? 'Left 1 Comment' : "Left #{required_value} Comments"
+        Badge.create(:name => badge_name,
+                     :image => 'badge.png',
+                     :requirement => "comments_left",
+                     :required_value => required_value)
+      end
     end
   end
 end

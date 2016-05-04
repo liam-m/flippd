@@ -38,4 +38,9 @@ class Flippd < Sinatra::Application
     origin = env["HTTP_REFERER"] || '/'
     redirect to(origin)
   end
+
+  # Forces the route to pass if there isn't a user logged in
+  def must_be_authenticated
+    pass unless @user
+  end
 end

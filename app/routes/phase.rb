@@ -38,4 +38,9 @@ class Flippd < Sinatra::Application
     erb @item["type"]
   end
 
+  # Forces a pass if the current item isn't of the correct type
+  def must_be_a( type )
+    pass unless @item and @item["type"] == type
+  end
+
 end
